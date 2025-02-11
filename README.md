@@ -2,37 +2,56 @@
 
 A simple Rust exercise based on an Advent of Code problem from 2015, [Day 3: Perfectly Spherical Houses in a Vacuum](https://adventofcode.com/2015/day/3).
 
-## Decide on a location data structure
+We'll go through part 1 together in class, and then have small groups sort out part 2 on your own. Below are the problem statements, followed by a sketch of how we solved part 1 together.
 
-There are several options:
+## Problem statement
 
-- A tuple like `(i32, i32)`
-- An array like `[i32; 2]`
-- A struct, with a couple of alternatives
-  - A tuple struct like `struct Pos(i32, i32)`
-  - A field struct (with named fields) like `struct Pos { x: i32, y: i32 }`
+The following problem statements are taken directly from [the Advent of Code problem statements](https://adventofcode.com/2015/day/3).
+Typically part 2 of Advent of Code problems is not visible until you've completed part 1, so I'm cheating slightly by
+sharing the problem statement of part 2 with everyone.
 
-Feel free to try this several different ways, but make sure that your "primary" solution uses a `struct` because I want us to talk about the necessary traits that we have `derive` in order to create a `HashSet` of `Pos`s.
+### Part 1
 
-Mention `cargo expand` and VSCode macro expansion tools so that we can see what `derive` is actually doing.
-- In VSCode, click on the name of the derive (e.g., `Hash` or `PartialEq`) and use the command palette to select "rust-analyzer: Expand macro recursively at caret".
-- On the command line, `cargo expand` will show your code after full macro expansion. You can use `cargo expand --tests` if you want to see how test code is handled.
-  - This requires that you first install `cargo-expand` with something like `cargo install cargo-expand`.
-  - This has some additional detail not shown in VSCode, and you'll probably find the VSCode/rust-analyzer expansion easier to read.
+Santa is delivering presents to an infinite two-dimensional grid of houses.
 
-## Create a direction type
+He begins by delivering a present to the house at his starting location, and then
+an elf at the North Pole calls him via radio and tells him where to move next.
+Moves are always exactly one house to the north (`^`), south (`v`), east (`>`), or west (`<`).
+After each move, he delivers another present to the house at his new location.
 
-Use an `enum`.
-- Implement the `TryFrom<char>` trait to convert from input characters to `Direction`s.
-- This implies some sort of error type like `struct IllegalCharacterError {}`.
+However, the elf back at the north pole has had a little too much eggnog, and so
+his directions are a little off, and Santa ends up visiting some houses more than
+once. How many houses receive at least one present?
 
-## Optional: Use the `Add` trait to implement moving positions
+For example:
 
-## Optional: Implement `Error` and `Display` on our error type
+- `>` delivers presents to 2 houses: one at the starting location, and one to the east.
+- `^>v<` delivers presents to 4 houses in a square, including twice to the house at
+  his starting/ending location.
+- `^v^v^v^v^v` delivers a bunch of presents to some very lucky children at only 2 houses.
 
-To be good Rust citizens we would implement the `std::error::Error` and `Display` traits for our error type. We didn't do it above in order to keep things simple, but we should probably do it now.
+### Part 2
 
-Introduce `thiserror`
+The next year, to speed up the process, Santa creates a robot version of himself,
+Robo-Santa, to deliver presents with him.
 
-We could introduce `thiserror` after we get everything working if there's time and interest.
+Santa and Robo-Santa start at the same location (delivering two presents to the
+same starting house), then take turns moving based on instructions from the elf,
+who is eggnoggedly reading from the same script as the previous year.
 
+This year, how many houses receive at least one present?
+
+For example:
+
+- `^v` delivers presents to 3 houses, because Santa goes north, and then Robo-Santa goes south.
+- `^>v<` now delivers presents to 3 houses, and Santa and Robo-Santa end up back where
+  they started.
+- `^v^v^v^v^v` now delivers presents to 11 houses, with Santa going one direction and
+  Robo-Santa going the other.
+
+---
+
+## Solution sketch for part 1
+
+I've provided unit tests that will cover most of the necessary logic, and we'll let those
+drive our development. Below we'll mark key decisions that need to be made as we go.
