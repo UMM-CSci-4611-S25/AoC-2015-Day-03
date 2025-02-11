@@ -29,7 +29,7 @@ mod tests {
     //     let mut visited_houses = VisitedHouses::new();
     //     visited_houses.perform_move(Direction::East);
     //     assert_eq!(visited_houses.num_visited_houses(), 2);
-    //     assert_eq!(visited_houses.current_pos, Pos(1, 0));
+    //     assert_eq!(visited_houses.current_pos(), Pos(1, 0));
     // }
 
     // #[test]
@@ -38,7 +38,7 @@ mod tests {
     //     let moves = Moves::from_str("^>v<").unwrap();
     //     visited_houses.perform_moves(moves);
     //     assert_eq!(visited_houses.num_visited_houses(), 4);
-    //     assert_eq!(visited_houses.current_pos, Pos(0, 0));
+    //     assert_eq!(visited_houses.current_pos(), Pos(0, 0));
     // }
 
     // #[test]
@@ -47,7 +47,7 @@ mod tests {
     //     let moves = Moves::from_str("^v^v^v^v^v").unwrap();
     //     visited_houses.perform_moves(moves);
     //     assert_eq!(visited_houses.num_visited_houses(), 2);
-    //     assert_eq!(visited_houses.current_pos, Pos(0, 0));
+    //     assert_eq!(visited_houses.current_pos(), Pos(0, 0));
     // }
 
     // #[test]
