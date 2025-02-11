@@ -18,7 +18,7 @@ fn main() {
 
     let num_visited_houses = visited_houses.num_visited_houses();
 
-    println!("The number of visited houses was {}", num_visited_houses);
+    println!("The number of visited houses was {num_visited_houses}");
 }
 
 #[derive(Debug, PartialEq, Eq)]
@@ -37,10 +37,10 @@ impl TryFrom<char> for Direction {
 
     fn try_from(value: char) -> Result<Self, Self::Error> {
         match value {
-            '^' => Ok(Direction::North),
-            'v' => Ok(Direction::South),
-            '<' => Ok(Direction::West),
-            '>' => Ok(Direction::East),
+            '^' => Ok(Self::North),
+            'v' => Ok(Self::South),
+            '<' => Ok(Self::West),
+            '>' => Ok(Self::East),
             illegal_char => Err(IllegalDirectionCharacter(illegal_char)),
         }
     }
@@ -52,7 +52,7 @@ impl FromStr for Moves {
     type Err = IllegalDirectionCharacter;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        Ok(Moves(
+        Ok(Self(
             s.chars()
                 .map(<char as TryInto<Direction>>::try_into)
                 .collect::<Result<Vec<_>, _>>()?,
@@ -67,20 +67,21 @@ pub struct Pos {
 }
 
 impl Pos {
-    pub fn new(x: i32, y: i32) -> Pos {
-        Pos { x, y }
+    #[must_use]
+    pub const fn new(x: i32, y: i32) -> Self {
+        Self { x, y }
     }
 }
 
 impl Add<Direction> for Pos {
-    type Output = Pos;
+    type Output = Self;
 
     fn add(self, direction: Direction) -> Self::Output {
         match direction {
-            Direction::North => Pos::new(self.x, self.y + 1),
-            Direction::South => Pos::new(self.x, self.y - 1),
-            Direction::East => Pos::new(self.x + 1, self.y),
-            Direction::West => Pos::new(self.x - 1, self.y),
+            Direction::North => Self::new(self.x, self.y + 1),
+            Direction::South => Self::new(self.x, self.y - 1),
+            Direction::East => Self::new(self.x + 1, self.y),
+            Direction::West => Self::new(self.x - 1, self.y),
         }
     }
 }
@@ -97,22 +98,25 @@ pub struct Santa {
 }
 
 impl Santa {
-    pub fn new() -> Santa {
+    #[must_use]
+    pub fn new() -> Self {
         let current_position = Pos::new(0, 0);
         let mut visited_houses = HashSet::new();
         visited_houses.insert(current_position);
 
-        Santa {
+        Self {
             visited_houses,
             current_position,
         }
     }
 
+    #[must_use]
     pub fn num_visited_houses(&self) -> usize {
         self.visited_houses.len()
     }
 
-    pub fn current_pos(&self) -> Pos {
+    #[must_use]
+    pub const fn current_pos(&self) -> Pos {
         self.current_position
     }
 
@@ -130,7 +134,7 @@ impl Santa {
 
 impl Default for Santa {
     fn default() -> Self {
-        Santa::new()
+        Self::new()
     }
 }
 
