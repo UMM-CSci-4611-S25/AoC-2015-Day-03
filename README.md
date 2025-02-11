@@ -110,6 +110,12 @@ Nic added `Eq` to the list for good measure.
 After class, Nic added a `new` method to our `Pos`
 type to make it easier to create new instances of `Pos`.
 
+> **Note:** This is an example of something we couldn't
+> do if we had gone with a simple tuple like `(i32, i32)`.
+> We arguably wouldn't _need_ to do it if we'd stuck with
+> a simple tuple, but it's worth noting that we couldn't
+> have even if we'd wanted to.
+
 ### Fleshing out `VisitedHouses`
 
 Currently `VisitedHouses` is an empty structure, and
