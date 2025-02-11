@@ -72,3 +72,74 @@ For example:
 
 I've provided unit tests that will cover most of the necessary logic, and we'll let those
 drive our development. Below we'll mark key decisions that need to be made as we go.
+
+### Create a `VisitedHouses` type
+
+To get the first test to pass, we needed to implement:
+
+- `VisitedHouses::new()`
+- `visitedHouses.num_visited_houses()`
+
+For starters we did really simple (and incorrect) implementations; we just returned 1 from
+`num_visited_houses()`, for example.
+
+We also implemented `Default` because Clippy suggested
+that it would be a good idea.
+
+### Create a `Pos` type
+
+To get the first test to compile and run, we needed some
+type for `visited_houses.current_position()` to return.
+
+We discussed several options:
+
+- `(i32, i32)`
+- `type Pos = (i32, i32)`
+- `struct Pos(i32, i32)`
+- `struct Pos { x: i32, y: i32 }`
+
+In the end we decided to use the last (a named
+field struct) so we'd have a named type with
+named fields.
+
+We found we need to implement both the `PartialEq` and
+`Debug` traits in order to get the test to pass. We
+just used `#[derive()]` for both of those, and
+Nic added `Eq` to the list for good measure.
+
+After class, Nic added a `new` method to our `Pos`
+type to make it easier to create new instances of `Pos`.
+
+### Fleshing out `VisitedHouses`
+
+Currently `VisitedHouses` is an empty structure, and
+that clearly won't work. So we'll need to add some
+fields to `VisitedHouses` that contain the information
+we need to solve the problem.
+
+So far our tests require that we be able to answer
+two questions:
+
+- How many houses have we visited? (`num_visited_houses()`)
+- What is the current position of Santa? (`current_pos()`)
+
+We could answer both of these by adding fields with the
+same or similar names, and then just return those fields
+as our answers. That probably makes sense for
+`current_pos()`, but it's less clear that it's a good
+idea for `num_visited_houses()`. Looking ahead, it
+seems likely that we would rather have a set (`HashSet`)
+of positions (`Pos`s), and return the size of that
+for `num_visited_houses`.
+
+So we went with:
+
+```rust
+pub struct VisitedHouses {
+    visited_houses: HashSet<Pos>,
+    current_position: Pos,
+}
+```
+
+> **That ended class on Tuesday, 11 Feb, and we'll continue
+on Thursday, 13 Feb.**
