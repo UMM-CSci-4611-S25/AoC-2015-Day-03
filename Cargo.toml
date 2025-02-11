@@ -1,0 +1,7 @@
+[package]
+name = "AoC-2015-Day-03"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+thiserror = "2.0.11"
