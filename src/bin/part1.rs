@@ -1,19 +1,61 @@
+use std::collections::HashSet;
+
 fn main() {
     let input_file_name = "input.txt";
     let contents = std::fs::read_to_string(input_file_name).expect("Failed to read the input file");
     println!("{}", contents.len());
 }
 
+#[derive(Debug, PartialEq, Eq)]
+pub struct Pos {
+    x: i32,
+    y: i32,
+}
+
+impl Pos {
+    pub fn new(x: i32, y: i32) -> Pos {
+        Pos { x, y }
+    }
+}
+
+pub struct VisitedHouses {
+    // visited_houses: HashSet<Pos>,
+    // current_position: Pos,
+}
+
+impl VisitedHouses {
+    pub fn new() -> VisitedHouses {
+        VisitedHouses {
+            // visited_houses: todo!(),
+            // current_position: todo!(),
+        }
+    }
+
+    pub fn num_visited_houses(&self) -> i32 {
+        1
+    }
+
+    pub fn current_pos(&self) -> Pos {
+        Pos::new(0, 0)
+    }
+}
+
+impl Default for VisitedHouses {
+    fn default() -> Self {
+        VisitedHouses::new()
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
 
-    // #[test]
-    // fn test_visited_houses_new() {
-    //     let mut visited_houses = VisitedHouses::new();
-    //     assert_eq!(visited_houses.num_visited_houses(), 1);
-    //     assert_eq!(visited_houses.current_pos, Pos(0, 0));
-    // }
+    #[test]
+    fn test_visited_houses_new() {
+        let visited_houses = VisitedHouses::new();
+        assert_eq!(visited_houses.num_visited_houses(), 1);
+        assert_eq!(visited_houses.current_pos(), Pos::new(0, 0));
+    }
 
     // #[test]
     // fn test_direction_try_from() {
