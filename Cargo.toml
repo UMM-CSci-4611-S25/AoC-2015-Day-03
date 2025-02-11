@@ -5,3 +5,11 @@ edition = "2021"
 
 [dependencies]
 thiserror = "2.0.11"
+
+[lints.clippy]
+pedantic = { level = "warn", priority = -1 }
+nursery = { level = "warn", priority = -1 }
+perf = { level = "warn", priority = -1 }
+complexity = { level = "warn", priority = -1 }
+correctness = { level = "deny", priority = -1 }
+style = { level = "warn", priority = -1 }
