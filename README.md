@@ -4,11 +4,28 @@ A simple Rust exercise based on an Advent of Code problem from 2015, [Day 3: Per
 
 We'll go through part 1 together in class, and then have small groups sort out part 2 on your own. Below are the problem statements, followed by a sketch of how we solved part 1 together.
 
+The project is organized so that there are two binaries in the `bin` directory:
+
+- `part1.rs`
+- `part2.rs`
+
+Both have a set of commented out unit tests that you should uncomment and get to pass.
+
+You should be able to run a given part with something like
+
+```bash
+cargo run --bin part1
+```
+
+replacing `part1` with `part2` as appropriate.
+
+You should be able to run all the tests with `cargo test`.
+
 ## Problem statement
 
 The following problem statements are taken directly from [the Advent of Code problem statements](https://adventofcode.com/2015/day/3).
-Typically part 2 of Advent of Code problems is not visible until you've completed part 1, so I'm cheating slightly by
-sharing the problem statement of part 2 with everyone.
+Typically part 2 of Advent of Code problems is not visible until you've completed part 1,
+so I'm cheating slightly by sharing the problem statement of part 2 with everyone.
 
 ### Part 1
 
