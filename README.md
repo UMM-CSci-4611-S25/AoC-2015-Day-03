@@ -149,3 +149,46 @@ pub struct VisitedHouses {
 
 > **That ended class on Tuesday, 11 Feb, and we'll continue
 on Thursday, 13 Feb.**
+
+---
+
+### Turn on a ton of Clippy warnings
+
+I realized that we didn't have all the Clippy warnings turned on that I would
+have liked, so I fixed that by adding:
+
+```toml
+[lints.clippy]
+pedantic = { level = "warn", priority = -1 }
+nursery = { level = "warn", priority = -1 }
+perf = { level = "warn", priority = -1 }
+complexity = { level = "warn", priority = -1 }
+correctness = { level = "deny", priority = -1 }
+style = { level = "warn", priority = -1 }
+```
+
+to `Cargo.toml`.
+
+### Create a `Direction` type
+
+We now needed a `Direction` type, namely an `enum` representing
+the four cardinal directions that Santa can move in:
+
+```rust
+pub enum Direction {
+    North,
+    South,
+    East,
+    West,
+}
+```
+
+We then implemented `VisitedHouses::perform_move(&mut self, Direction)`
+to update the game state by processing that move. We also provided "real"
+implementations of `num_visited_houses()` and `current_pos()`, which required
+deriving `Hash + Clone + Copy` for `Pos`.
+
+> **That ended class on Thursday, 13 Feb, and we'll continue
+on Tuesday, 18 Feb.**
+
+---
