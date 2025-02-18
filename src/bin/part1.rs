@@ -7,12 +7,12 @@ fn main() {
 
     let moves = Moves::from_str(file_contents.trim())
         .expect("Failed to parse the input file to a list of moves");
-    let mut visited_houses = VisitedHouses::new();
-    visited_houses.perform_moves(moves);
+    let mut santa_tracker = SantaTracker::new();
+    santa_tracker.perform_moves(moves);
 
     println!(
         "Santa delivered presents to {} houses.",
-        visited_houses.num_visited_houses()
+        santa_tracker.num_visited_houses()
     );
 }
 
@@ -70,12 +70,12 @@ impl FromStr for Moves {
     }
 }
 
-pub struct VisitedHouses {
+pub struct SantaTracker {
     visited_houses: HashSet<Pos>,
     current_position: Pos,
 }
 
-impl VisitedHouses {
+impl SantaTracker {
     #[must_use]
     pub fn new() -> Self {
         let initial_position = Pos::new(0, 0);
@@ -116,7 +116,7 @@ impl VisitedHouses {
     }
 }
 
-impl Default for VisitedHouses {
+impl Default for SantaTracker {
     fn default() -> Self {
         Self::new()
     }
@@ -127,27 +127,27 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_visited_houses_new() {
-        let visited_houses = VisitedHouses::new();
-        assert_eq!(visited_houses.num_visited_houses(), 1);
-        assert_eq!(visited_houses.current_pos(), Pos::new(0, 0));
+    fn test_santa_tracker_new() {
+        let santa_tracker = SantaTracker::new();
+        assert_eq!(santa_tracker.num_visited_houses(), 1);
+        assert_eq!(santa_tracker.current_pos(), Pos::new(0, 0));
     }
 
     #[test]
     fn test_move_east() {
-        let mut visited_houses = VisitedHouses::new();
-        visited_houses.perform_move(Direction::East);
-        assert_eq!(visited_houses.num_visited_houses(), 2);
-        assert_eq!(visited_houses.current_pos(), Pos::new(1, 0));
+        let mut santa_tracker = SantaTracker::new();
+        santa_tracker.perform_move(Direction::East);
+        assert_eq!(santa_tracker.num_visited_houses(), 2);
+        assert_eq!(santa_tracker.current_pos(), Pos::new(1, 0));
     }
 
     #[test]
     fn test_square_moves() {
-        let mut visited_houses = VisitedHouses::new();
+        let mut santa_tracker = SantaTracker::new();
         let moves = Moves::from_str("^>v<").unwrap();
-        visited_houses.perform_moves(moves);
-        assert_eq!(visited_houses.num_visited_houses(), 4);
-        assert_eq!(visited_houses.current_pos(), Pos::new(0, 0));
+        santa_tracker.perform_moves(moves);
+        assert_eq!(santa_tracker.num_visited_houses(), 4);
+        assert_eq!(santa_tracker.current_pos(), Pos::new(0, 0));
     }
 
     #[test]
@@ -161,18 +161,18 @@ mod tests {
 
     #[test]
     fn test_up_down_moves() {
-        let mut visited_houses = VisitedHouses::new();
+        let mut santa_tracker = SantaTracker::new();
         let moves = Moves::from_str("^v^v^v^v^v").unwrap();
-        visited_houses.perform_moves(moves);
-        assert_eq!(visited_houses.num_visited_houses(), 2);
-        assert_eq!(visited_houses.current_pos(), Pos::new(0, 0));
+        santa_tracker.perform_moves(moves);
+        assert_eq!(santa_tracker.num_visited_houses(), 2);
+        assert_eq!(santa_tracker.current_pos(), Pos::new(0, 0));
     }
 
     #[test]
     fn test_aoc_input() {
-        let mut visited_houses = VisitedHouses::new();
+        let mut santa_tracker = SantaTracker::new();
         let moves = Moves::from_str(include_str!("../../input.txt").trim()).unwrap();
-        visited_houses.perform_moves(moves);
-        assert_eq!(visited_houses.num_visited_houses(), 2565);
+        santa_tracker.perform_moves(moves);
+        assert_eq!(santa_tracker.num_visited_houses(), 2565);
     }
 }
