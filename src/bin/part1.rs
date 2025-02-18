@@ -19,12 +19,45 @@ impl Pos {
     }
 }
 
-#[derive(Copy, Clone)]
+#[derive(Debug, PartialEq, Eq, Copy, Clone)]
 pub enum Direction {
     North,
     South,
     East,
     West,
+}
+
+#[derive(Debug, PartialEq, Eq)]
+pub struct IllegalChar(char);
+
+impl TryFrom<char> for Direction {
+    type Error = IllegalChar;
+
+    fn try_from(c: char) -> Result<Self, Self::Error> {
+        Ok(match c {
+            '^' => Self::North,
+            'v' => Self::South,
+            '>' => Self::East,
+            '<' => Self::West,
+            _ => return Err(IllegalChar(c)),
+        })
+    }
+}
+
+pub struct Moves {
+    moves: Vec<Direction>,
+}
+
+impl FromStr for Moves {
+    type Err = IllegalChar;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let moves = s
+            .chars()
+            .map(Direction::try_from)
+            .collect::<Result<Vec<Direction>, IllegalChar>>()?;
+        Ok(Self { moves })
+    }
 }
 
 pub struct VisitedHouses {
