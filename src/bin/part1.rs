@@ -1,4 +1,4 @@
-use std::collections::HashSet;
+use std::{collections::HashSet, hash::Hash};
 
 fn main() {
     let input_file_name = "input.txt";
@@ -6,43 +6,70 @@ fn main() {
     println!("{}", contents.len());
 }
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Hash, Copy, Clone)]
 pub struct Pos {
     x: i32,
     y: i32,
 }
 
 impl Pos {
-    pub fn new(x: i32, y: i32) -> Pos {
-        Pos { x, y }
+    #[must_use]
+    pub const fn new(x: i32, y: i32) -> Self {
+        Self { x, y }
     }
+}
+
+#[derive(Copy, Clone)]
+pub enum Direction {
+    North,
+    South,
+    East,
+    West,
 }
 
 pub struct VisitedHouses {
-    // visited_houses: HashSet<Pos>,
-    // current_position: Pos,
+    visited_houses: HashSet<Pos>,
+    current_position: Pos,
 }
 
 impl VisitedHouses {
-    pub fn new() -> VisitedHouses {
-        VisitedHouses {
-            // visited_houses: todo!(),
-            // current_position: todo!(),
+    #[must_use]
+    pub fn new() -> Self {
+        let initial_position = Pos::new(0, 0);
+        let mut visited_houses = HashSet::new();
+        visited_houses.insert(initial_position);
+
+        Self {
+            visited_houses,
+            current_position: initial_position,
         }
     }
 
-    pub fn num_visited_houses(&self) -> i32 {
-        1
+    #[must_use]
+    pub fn num_visited_houses(&self) -> usize {
+        self.visited_houses.len()
     }
 
-    pub fn current_pos(&self) -> Pos {
-        Pos::new(0, 0)
+    #[must_use]
+    pub const fn current_pos(&self) -> Pos {
+        self.current_position
+    }
+
+    pub fn perform_move(&mut self, direction: Direction) {
+        let new_position = match direction {
+            Direction::North => Pos::new(self.current_position.x, self.current_position.y + 1),
+            Direction::South => Pos::new(self.current_position.x, self.current_position.y - 1),
+            Direction::East => Pos::new(self.current_position.x + 1, self.current_position.y),
+            Direction::West => Pos::new(self.current_position.x - 1, self.current_position.y),
+        };
+        self.current_position = new_position;
+        self.visited_houses.insert(new_position);
     }
 }
 
 impl Default for VisitedHouses {
     fn default() -> Self {
-        VisitedHouses::new()
+        Self::new()
     }
 }
 
@@ -57,22 +84,13 @@ mod tests {
         assert_eq!(visited_houses.current_pos(), Pos::new(0, 0));
     }
 
-    // #[test]
-    // fn test_direction_try_from() {
-    //     assert_eq!('^'.try_into(), Ok(Direction::North));
-    //     assert_eq!('v'.try_into(), Ok(Direction::South));
-    //     assert_eq!('<'.try_into(), Ok(Direction::West));
-    //     assert_eq!('>'.try_into(), Ok(Direction::East));
-    //     assert_eq!('x'.try_into(), Err(IllegalDirectionCharacter('x')));
-    // }
-
-    // #[test]
-    // fn test_move_east() {
-    //     let mut visited_houses = VisitedHouses::new();
-    //     visited_houses.perform_move(Direction::East);
-    //     assert_eq!(visited_houses.num_visited_houses(), 2);
-    //     assert_eq!(visited_houses.current_pos(), Pos::new(1, 0));
-    // }
+    #[test]
+    fn test_move_east() {
+        let mut visited_houses = VisitedHouses::new();
+        visited_houses.perform_move(Direction::East);
+        assert_eq!(visited_houses.num_visited_houses(), 2);
+        assert_eq!(visited_houses.current_pos(), Pos::new(1, 0));
+    }
 
     // #[test]
     // fn test_square_moves() {
@@ -81,6 +99,15 @@ mod tests {
     //     visited_houses.perform_moves(moves);
     //     assert_eq!(visited_houses.num_visited_houses(), 4);
     //     assert_eq!(visited_houses.current_pos(), Pos::new(0, 0));
+    // }
+
+    // #[test]
+    // fn test_direction_try_from() {
+    //     assert_eq!('^'.try_into(), Ok(Direction::North));
+    //     assert_eq!('v'.try_into(), Ok(Direction::South));
+    //     assert_eq!('<'.try_into(), Ok(Direction::West));
+    //     assert_eq!('>'.try_into(), Ok(Direction::East));
+    //     assert_eq!('x'.try_into(), Err(IllegalDirectionCharacter('x')));
     // }
 
     // #[test]
