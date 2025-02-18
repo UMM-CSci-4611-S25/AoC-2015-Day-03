@@ -1,8 +1,24 @@
-# AoC-2015-Day-03
+# AoC-2015-Day-03 <!-- omit from toc -->
 
 A simple Rust exercise based on an Advent of Code problem from 2015, [Day 3: Perfectly Spherical Houses in a Vacuum](https://adventofcode.com/2015/day/3).
 
 We'll go through part 1 together in class, and then have small groups sort out part 2 on your own. Below are the problem statements, followed by a sketch of how we solved part 1 together.
+
+- [Project organization and running the code](#project-organization-and-running-the-code)
+- [Problem statement](#problem-statement)
+  - [Part 1](#part-1)
+  - [Part 2](#part-2)
+- [Solution sketch for part 1](#solution-sketch-for-part-1)
+  - [Create a `VisitedHouses` type](#create-a-visitedhouses-type)
+  - [Create a `Pos` type](#create-a-pos-type)
+  - [Fleshing out `VisitedHouses`](#fleshing-out-visitedhouses)
+  - [Turn on a ton of Clippy warnings](#turn-on-a-ton-of-clippy-warnings)
+  - [Create a `Direction` type](#create-a-direction-type)
+  - [Create `Moves` type and implement parsing](#create-moves-type-and-implement-parsing)
+  - [Implement `perform_moves()`](#implement-perform_moves)
+  - [Some after-class clean-up](#some-after-class-clean-up)
+
+## Project organization and running the code
 
 The project is organized so that there are two binaries in the `bin` directory:
 
@@ -192,3 +208,35 @@ deriving `Hash + Clone + Copy` for `Pos`.
 on Tuesday, 18 Feb.**
 
 ---
+
+### Create `Moves` type and implement parsing
+
+We added a `Moves` type that really just wraps a `Vec<Direction>`.
+
+We then implemented `FromStr` for `Moves` so we can parse a list of
+moves to a vector of `Direction`. This was a fairly straightforward use
+of `map`, but we did need to talk about the idea of using `.collect::<Result<Vec<Direction>, IllegalChar>>`
+to collect an iterator over `Result<Direction, IllegalChar>` into either an `Ok` wrapping
+a `Vec<Direction>` or an `Err` wrapping an `IllegalChar` error.
+
+The other part of parsing was the need to implement `TryFrom<char>` for `Direction`. This was
+a pretty simple use of `match`, with a "catch all" case at the end which returns an
+`IllegalChar` error.
+
+### Implement `perform_moves()`
+
+To finish things off, we had to implement `VisitingHouses::perform_moves()`,
+which was a simple `for` loop:
+
+```rust
+        for m in moves.moves {
+            self.perform_move(m);
+        }
+```
+
+### Some after-class clean-up
+
+After class I had to make a few changes so that `main()` actually ran the program. (Duh)
+
+I also chose to rename `VisitedHouses` to `SantaTracker` since I think that's a much more
+descriptive name, and will make more sense when we move to Part 2.
