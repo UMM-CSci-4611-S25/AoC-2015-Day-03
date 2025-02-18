@@ -1,9 +1,19 @@
-use std::{collections::HashSet, hash::Hash};
+use std::{collections::HashSet, hash::Hash, str::FromStr};
 
 fn main() {
     let input_file_name = "input.txt";
-    let contents = std::fs::read_to_string(input_file_name).expect("Failed to read the input file");
-    println!("{}", contents.len());
+    let file_contents =
+        std::fs::read_to_string(input_file_name).expect("Failed to read the input file");
+
+    let moves = Moves::from_str(file_contents.trim())
+        .expect("Failed to parse the input file to a list of moves");
+    let mut visited_houses = VisitedHouses::new();
+    visited_houses.perform_moves(moves);
+
+    println!(
+        "Santa delivered presents to {} houses.",
+        visited_houses.num_visited_houses()
+    );
 }
 
 #[derive(Debug, PartialEq, Eq, Hash, Copy, Clone)]
