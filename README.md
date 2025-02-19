@@ -17,6 +17,7 @@ We'll go through part 1 together in class, and then have small groups sort out p
   - [Create `Moves` type and implement parsing](#create-moves-type-and-implement-parsing)
   - [Implement `perform_moves()`](#implement-perform_moves)
   - [Some after-class clean-up](#some-after-class-clean-up)
+  - [Use the `Add` trait](#use-the-add-trait)
 
 ## Project organization and running the code
 
@@ -240,3 +241,9 @@ After class I had to make a few changes so that `main()` actually ran the progra
 
 I also chose to rename `VisitedHouses` to `SantaTracker` since I think that's a much more
 descriptive name, and will make more sense when we move to Part 2.
+
+### Use the `Add` trait
+
+Also after class, I realized that I'd meant to show you how to use the `Add` trait
+to allow things like adding a `Pos` to a `Direction`. I quick implemented that [in
+a PR](https://github.com/UMM-CSci-4611-S25/AoC-2015-Day-03/pull/1) so you could see exactly what changed.
