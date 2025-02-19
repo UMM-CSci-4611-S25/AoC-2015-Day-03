@@ -1,4 +1,4 @@
-use std::{collections::HashSet, hash::Hash, str::FromStr};
+use std::{collections::HashSet, hash::Hash, ops::Add, str::FromStr};
 
 fn main() {
     let input_file_name = "input.txt";
@@ -35,6 +35,19 @@ pub enum Direction {
     South,
     East,
     West,
+}
+
+impl Add<Direction> for Pos {
+    type Output = Self;
+
+    fn add(self, direction: Direction) -> Self::Output {
+        match direction {
+            Direction::North => Self::new(self.x, self.y + 1),
+            Direction::South => Self::new(self.x, self.y - 1),
+            Direction::East => Self::new(self.x + 1, self.y),
+            Direction::West => Self::new(self.x - 1, self.y),
+        }
+    }
 }
 
 #[derive(Debug, PartialEq, Eq)]
@@ -99,12 +112,7 @@ impl SantaTracker {
     }
 
     pub fn perform_move(&mut self, direction: Direction) {
-        let new_position = match direction {
-            Direction::North => Pos::new(self.current_position.x, self.current_position.y + 1),
-            Direction::South => Pos::new(self.current_position.x, self.current_position.y - 1),
-            Direction::East => Pos::new(self.current_position.x + 1, self.current_position.y),
-            Direction::West => Pos::new(self.current_position.x - 1, self.current_position.y),
-        };
+        let new_position = self.current_position + direction;
         self.current_position = new_position;
         self.visited_houses.insert(new_position);
     }
